@@ -1,10 +1,9 @@
 package fr.ekinci.clientmanagement.user.controllers;
 
 import fr.ekinci.clientmanagement.user.entities.UserEntity;
-import fr.ekinci.clientmanagement.user.models.UserDto;
-// import org.springframework.data.domain.PageRequest;
 import fr.ekinci.clientmanagement.user.repositories.UserRepository;
 import fr.ekinci.clientmanagement.user.services.UserService;
+import fr.ekinci.clientmodels.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

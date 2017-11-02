@@ -1,6 +1,6 @@
 package fr.ekinci.clientmanagement.user.services;
 
-import fr.ekinci.clientmanagement.user.models.UserDto;
+import fr.ekinci.clientmodels.UserDto;
 
 import java.util.List;
 import java.util.Optional;

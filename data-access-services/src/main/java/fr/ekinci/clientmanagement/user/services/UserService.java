@@ -1,8 +1,8 @@
 package fr.ekinci.clientmanagement.user.services;
 
 import fr.ekinci.clientmanagement.user.entities.UserEntity;
-import fr.ekinci.clientmanagement.user.models.UserDto;
 import fr.ekinci.clientmanagement.user.repositories.UserRepository;
+import fr.ekinci.clientmodels.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
