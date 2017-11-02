@@ -2,6 +2,7 @@ package fr.ekinci.clientmanagement.user.controllers;
 
 import fr.ekinci.clientmanagement.user.services.UserService;
 import fr.ekinci.clientmodels.AddressDto;
+import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,6 +80,19 @@ public class UserController {
 		Optional<UserDto> userDto = userService.getUserById(id);
 		if (userDto.isPresent()) {
 			userService.updateAddress(id, address);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+
+	@RequestMapping(path = "/{id}/phones", method = RequestMethod.POST)
+	public ResponseEntity<?> addPhone(@PathVariable String id, @RequestBody PhoneDto p) {
+		// Just check if the user exists
+		Optional<UserDto> userDto = userService.getUserById(id);
+		if (userDto.isPresent()) {
+			userService.addPhoneToUser(id, p);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

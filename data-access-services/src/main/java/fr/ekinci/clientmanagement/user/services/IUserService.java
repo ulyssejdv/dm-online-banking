@@ -1,6 +1,7 @@
 package fr.ekinci.clientmanagement.user.services;
 
 import fr.ekinci.clientmodels.AddressDto;
+import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface IUserService {
 	void update(String id, UserDto userDto);
 
 	void updateAddress(String id, AddressDto addressDto);
+
+	void addPhoneToUser(String id, PhoneDto p);
 }

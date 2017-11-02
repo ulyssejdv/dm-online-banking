@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 
 @Data
@@ -22,8 +23,8 @@ public class UserEntity {
 	@OneToOne
 	private AddressEntity address;
 
-	@OneToMany
-	private Collection<PhoneEntity> phones;
+	@OneToMany(cascade = {CascadeType.PERSIST})
+	private Set<PhoneEntity> phones;
 
     public Long getId() {
         return id;
@@ -61,7 +62,7 @@ public class UserEntity {
         return phones;
     }
 
-    public void setPhones(Collection<PhoneEntity> phones) {
+    public void setPhones(Set<PhoneEntity> phones) {
         this.phones = phones;
     }
 }
