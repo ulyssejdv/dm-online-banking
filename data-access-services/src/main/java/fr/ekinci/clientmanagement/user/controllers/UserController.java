@@ -1,8 +1,7 @@
 package fr.ekinci.clientmanagement.user.controllers;
 
-import fr.ekinci.clientmanagement.user.entities.UserEntity;
-import fr.ekinci.clientmanagement.user.repositories.UserRepository;
 import fr.ekinci.clientmanagement.user.services.UserService;
+import fr.ekinci.clientmodels.AddressDto;
 import fr.ekinci.clientmodels.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +70,18 @@ public class UserController {
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable String id) {
-		userService.delete(id);
+		//userService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequestMapping(path = "/{id}/adresse", method = RequestMethod.PATCH)
+	public ResponseEntity<?> updateAddresse(@PathVariable String id, @RequestBody AddressDto address) {
+		Optional<UserDto> userDto = userService.getUserById(id);
+		if (userDto.isPresent()) {
+			userService.updateAddress(id, address);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 }
