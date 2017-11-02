@@ -1,5 +1,6 @@
 package fr.ekinci.clientmanagement.user.services;
 
+import fr.ekinci.clientmanagement.user.entities.PhoneEntity;
 import fr.ekinci.clientmanagement.user.entities.UserEntity;
 import fr.ekinci.clientmanagement.user.repositories.UserRepository;
 import fr.ekinci.clientmodels.AddressDto;
@@ -97,6 +98,20 @@ public class UserService implements IUserService {
 		userEntity.getAddress().setCode(addressDto.getCode());
 		userEntity.getAddress().setCountry(addressDto.getCountry());
 		userEntity.getAddress().setStreet(addressDto.getStreet());
+		userRepository.save(userEntity);
+	}
+
+	@Override
+	public void addPhoneToUser(String id, PhoneDto p) {
+
+		PhoneEntity phoneEntity = new PhoneEntity();
+		phoneEntity.setLabel(p.getLabel());
+		phoneEntity.setNumber(p.getNumber());
+
+		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
+		userEntity.getPhones().add(phoneEntity);
+		log.info(userEntity.getPhones().toString());
+
 		userRepository.save(userEntity);
 	}
 }
