@@ -72,7 +72,7 @@ public class UserController {
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable String id) {
-		// TODO
+		userService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

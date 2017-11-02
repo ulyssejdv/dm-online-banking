@@ -65,7 +65,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public void delete(String id) {
-
+		userRepository.delete(Long.parseLong(id));
 	}
 
 	@Override
