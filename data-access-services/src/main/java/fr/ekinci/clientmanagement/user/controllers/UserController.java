@@ -31,7 +31,6 @@ public class UserController {
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
-		// TODO
 		final Optional<UserDto> dtoOpt = userService.getUserById(id);
 		return (dtoOpt.isPresent()) ?
 			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -55,7 +54,7 @@ public class UserController {
 		}
 
 		// TODO
-		final List<UserDto> userDtoList = Collections.emptyList();
+		final List<UserDto> userDtoList = userService.getAll();
 		return (!userDtoList.isEmpty()) ?
 			new ResponseEntity<>(userDtoList, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
