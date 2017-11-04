@@ -1,5 +1,7 @@
 package fr.ekinci.clientmanagement.user.controllers;
 
+import fr.ekinci.clientmanagement.user.services.AddressService;
+import fr.ekinci.clientmanagement.user.services.PhoneService;
 import fr.ekinci.clientmanagement.user.services.UserService;
 import fr.ekinci.clientmodels.AddressDto;
 import fr.ekinci.clientmodels.PhoneDto;
@@ -22,18 +24,18 @@ import java.util.Optional;
 public class UserController {
 
 	private final UserService userService;
+	private final PhoneService phoneService;
+	private final AddressService addressService;
+
 
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, PhoneService phoneService, AddressService addressService) {
 		this.userService = userService;
+		this.phoneService = phoneService;
+		this.addressService = addressService;
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
-		final Optional<UserDto> dtoOpt = userService.getUserById(id);
-		return (dtoOpt.isPresent()) ?
-			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+
 
 	/**
 	 * If page and size request parameters are filled, return a page. Otherwise, return a list of all elements.
@@ -42,60 +44,63 @@ public class UserController {
 	 * @param size      Page size
 	 * @return          Can return a TODO @link org.springframework.data.domain.Page OR a {@link List} of DTO
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<?> get(
 		@RequestParam(value = "page", required = false) Integer page,
 		@RequestParam(value = "size", required = false) Integer size
 	) {
-		// Pagination
 		if (page != null && size != null) {
 			// TODO
 		}
 
-		// TODO
 		final List<UserDto> userDtoList = userService.getAll();
-		return (!userDtoList.isEmpty()) ?
-			new ResponseEntity<>(userDtoList, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+		if (!userDtoList.isEmpty()) {
+            return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
+        final Optional<UserDto> dtoOpt = userService.getUserById(id);
+        return (dtoOpt.isPresent()) ?
+                new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+
+	@PostMapping
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
 		return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDto user) {
-		// TODO
+
+
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDto userDto) {
+		userService.update(id, userDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+
+
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
-		//userService.delete(id);
+		userService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(path = "/{id}/adresse", method = RequestMethod.PATCH)
-	public ResponseEntity<?> updateAddresse(@PathVariable String id, @RequestBody AddressDto address) {
-		Optional<UserDto> userDto = userService.getUserById(id);
-		if (userDto.isPresent()) {
-			userService.updateAddress(id, address);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+	@PostMapping(path = "/{id}/phones")
+	public ResponseEntity<PhoneDto> addPhoneToUser(@PathVariable Long id, @RequestBody PhoneDto phoneDto) {
+		return new ResponseEntity<>(phoneService.create(id, phoneDto), HttpStatus.OK);
 	}
 
-
-	@RequestMapping(path = "/{id}/phones", method = RequestMethod.POST)
-	public ResponseEntity<?> addPhone(@PathVariable String id, @RequestBody PhoneDto p) {
-		// Just check if the user exists
-		Optional<UserDto> userDto = userService.getUserById(id);
-		if (userDto.isPresent()) {
-			userService.addPhoneToUser(id, p);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+	@PostMapping(path = "/{id}/address")
+	public ResponseEntity<PhoneDto> addAddressToUser(@PathVariable Long id, @RequestBody AddressDto addressDto) {
+		return new ResponseEntity<>(addressService.create(id, addressDto), HttpStatus.OK);
 	}
 }

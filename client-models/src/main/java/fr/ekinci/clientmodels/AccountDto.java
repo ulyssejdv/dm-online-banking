@@ -5,18 +5,18 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
- * Created by ulysse on 02/11/2017.
+ * Created by ulysse on 03/11/2017.
  */
 @Data
 @Builder
 @ToString
-public class PhoneDto {
+public class AccountDto {
 
     private String id;
 
-    private String label;
+    private Integer solde;
 
-    private String number;
+    private String typeAccount;
 
     private UserDto user;
 }

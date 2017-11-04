@@ -23,4 +23,7 @@ public class AddressEntity {
 
     @Column(name = "code")
     private String code;
+
+    @OneToOne(cascade = {CascadeType.REMOVE})
+    private UserEntity user;
 }

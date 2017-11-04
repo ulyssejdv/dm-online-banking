@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Gokan EKINCI
@@ -20,4 +21,5 @@ public class UserDto {
 	private String firstName;
 	private AddressDto address;
 	private Collection<PhoneDto> phones;
+	private Collection<AccountDto> accounts;
 }

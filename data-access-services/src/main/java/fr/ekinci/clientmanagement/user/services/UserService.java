@@ -1,8 +1,12 @@
 package fr.ekinci.clientmanagement.user.services;
 
+import fr.ekinci.clientmanagement.user.entities.AccountEntity;
 import fr.ekinci.clientmanagement.user.entities.PhoneEntity;
 import fr.ekinci.clientmanagement.user.entities.UserEntity;
+import fr.ekinci.clientmanagement.user.repositories.AccountRepository;
 import fr.ekinci.clientmanagement.user.repositories.UserRepository;
+import fr.ekinci.clientmanagement.user.services.interfaces.IUserService;
+import fr.ekinci.clientmodels.AccountDto;
 import fr.ekinci.clientmodels.AddressDto;
 import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
@@ -19,10 +23,12 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
 
 	private final UserRepository userRepository;
+	private final AccountRepository accountRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, AccountRepository accountRepository) {
 		this.userRepository = userRepository;
+		this.accountRepository = accountRepository;
 	}
 
 	@Override
@@ -41,31 +47,19 @@ public class UserService implements IUserService {
 
 	@Override
 	public Optional<UserDto> getUserById(String id) {
+
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
-		log.info(userEntity.toString());
-		return (userEntity != null) ?
-			Optional.of(
-				UserDto.builder()
-						.id(String.valueOf(userEntity.getId()))
-						.firstName(userEntity.getFirstName())
-						.lastName(userEntity.getLastName())
-						.address(AddressDto.builder()
-								.code(userEntity.getAddress().getCode())
-								.country(userEntity.getAddress().getCountry())
-								.id(String.valueOf(userEntity.getAddress().getId()))
-								.street(userEntity.getAddress().getStreet())
-								.build()
-						)
-						.phones(userEntity.getPhones().stream().map(
-								p -> PhoneDto.builder()
-										.id(String.valueOf(p.getId()))
-										.label(p.getLabel())
-										.number(p.getNumber())
-										.build()
-						).collect(Collectors.toList()))
-						.build()
-			)
-			: Optional.empty();
+
+		if (userEntity != null) {
+            UserDto userDto = UserDto.builder()
+                    .id(String.valueOf(userEntity.getId()))
+                    .firstName(userEntity.getFirstName())
+                    .lastName(userEntity.getLastName())
+                    .build();
+            return Optional.of(userDto);
+        }
+
+		return Optional.empty();
 	}
 
 	@Override
@@ -89,29 +83,9 @@ public class UserService implements IUserService {
 
 	@Override
 	public void update(String id, UserDto userDto) {
-
-	}
-
-	@Override
-	public void updateAddress(String id, AddressDto addressDto) {
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
-		userEntity.getAddress().setCode(addressDto.getCode());
-		userEntity.getAddress().setCountry(addressDto.getCountry());
-		userEntity.getAddress().setStreet(addressDto.getStreet());
-		userRepository.save(userEntity);
-	}
-
-	@Override
-	public void addPhoneToUser(String id, PhoneDto p) {
-
-		PhoneEntity phoneEntity = new PhoneEntity();
-		phoneEntity.setLabel(p.getLabel());
-		phoneEntity.setNumber(p.getNumber());
-
-		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
-		userEntity.getPhones().add(phoneEntity);
-		log.info(userEntity.getPhones().toString());
-
+		userEntity.setFirstName(userDto.getFirstName());
+		userEntity.setLastName(userDto.getLastName());
 		userRepository.save(userEntity);
 	}
 }

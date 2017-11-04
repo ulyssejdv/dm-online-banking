@@ -20,12 +20,6 @@ public class UserEntity {
 	@Column(name = "first_name")
 	private String firstName;
 
-	@OneToOne
-	private AddressEntity address;
-
-	@OneToMany(cascade = {CascadeType.PERSIST})
-	private Set<PhoneEntity> phones;
-
     public Long getId() {
         return id;
     }
@@ -50,19 +44,4 @@ public class UserEntity {
         this.firstName = firstName;
     }
 
-    public AddressEntity getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressEntity address) {
-        this.address = address;
-    }
-
-    public Collection<PhoneEntity> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(Set<PhoneEntity> phones) {
-        this.phones = phones;
-    }
 }
