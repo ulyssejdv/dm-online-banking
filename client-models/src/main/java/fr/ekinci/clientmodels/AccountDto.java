@@ -17,6 +17,4 @@ public class AccountDto {
     private Integer solde;
 
     private String typeAccount;
-
-    private UserDto user;
 }

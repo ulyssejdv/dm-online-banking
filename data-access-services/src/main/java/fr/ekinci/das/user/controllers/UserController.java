@@ -6,6 +6,7 @@ import fr.ekinci.das.user.services.UserService;
 import fr.ekinci.clientmodels.AddressDto;
 import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Optional;
 /**
  * @author Gokan EKINCI
  */
+@Log
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
@@ -66,6 +68,7 @@ public class UserController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
+		log.info("Hello");
         final Optional<UserDto> dtoOpt = userService.getUserById(id);
         return (dtoOpt.isPresent()) ?
                 new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);

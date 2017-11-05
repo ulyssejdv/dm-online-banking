@@ -59,23 +59,7 @@ public class AddressService implements IAddressService {
 
 	@Override
 	public AddressDto create(Long id, AddressDto addressDto) {
-
-		AddressEntity addressEntity = new AddressEntity();
-		addressEntity.setCode(addressDto.getCode());
-		addressEntity.setCountry(addressDto.getCountry());
-		addressEntity.setStreet(addressDto.getStreet());
-
-		UserEntity userEntity = userRepository.findOne(id);
-        addressEntity.setUser(userEntity);
-
-        addressEntity = addressRepository.save(addressEntity);
-
-		return AddressDto.builder()
-                .street(addressEntity.getStreet())
-                .code(addressEntity.getCode())
-                .country(addressEntity.getCountry())
-                .id(String.valueOf(addressEntity.getId()))
-                .build();
+		return null;
 	}
 
 	@Override

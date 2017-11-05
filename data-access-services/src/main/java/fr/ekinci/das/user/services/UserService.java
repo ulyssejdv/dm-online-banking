@@ -1,5 +1,8 @@
 package fr.ekinci.das.user.services;
 
+import fr.ekinci.clientmodels.PhoneDto;
+import fr.ekinci.das.user.entities.AddressEntity;
+import fr.ekinci.das.user.entities.PhoneEntity;
 import fr.ekinci.das.user.entities.UserEntity;
 import fr.ekinci.das.user.repositories.AccountRepository;
 import fr.ekinci.das.user.repositories.UserRepository;
@@ -18,12 +21,10 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
 
 	private final UserRepository userRepository;
-	private final AccountRepository accountRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository, AccountRepository accountRepository) {
+	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		this.accountRepository = accountRepository;
 	}
 
 	@Override
@@ -50,6 +51,13 @@ public class UserService implements IUserService {
                     .id(String.valueOf(userEntity.getId()))
                     .firstName(userEntity.getFirstName())
                     .lastName(userEntity.getLastName())
+                    .phones(userEntity.getPhones().stream().map(
+                            p -> PhoneDto.builder()
+                                    .label(p.getLabel())
+                                    .number(p.getNumber())
+                                    .id(String.valueOf(p.getId()))
+                                    .build()
+                    ).collect(Collectors.toList()))
                     .build();
             return Optional.of(userDto);
         }
@@ -59,16 +67,35 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDto create(UserDto userDto) {
+
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(userDto.getFirstName());
 		userEntity.setLastName(userDto.getLastName());
 
-		UserEntity userEntity1 = userRepository.save(userEntity);
-		return UserDto.builder()
-			.id(String.valueOf(userEntity1.getId()))
-			.firstName(userEntity1.getFirstName())
-			.lastName(userEntity1.getLastName())
-			.build();
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setStreet(userDto.getAddress().getStreet());
+        addressEntity.setCode(userDto.getAddress().getCode());
+        addressEntity.setCountry(userDto.getAddress().getCountry());
+        userEntity.setAddress(addressEntity);
+
+        userEntity.setPhones(userDto.getPhones()
+                .stream()
+                .map(
+                        p -> {
+                            PhoneEntity phoneEntity = new PhoneEntity();
+                            phoneEntity.setLabel(p.getLabel());
+                            phoneEntity.setNumber(p.getNumber());
+                            return phoneEntity;
+                        }
+                )
+                .collect(Collectors.toSet())
+        );
+
+        userEntity = userRepository.save(userEntity);
+
+        userDto.setId(String.valueOf(userEntity.getId()));
+
+		return userDto;
 	}
 
 	@Override

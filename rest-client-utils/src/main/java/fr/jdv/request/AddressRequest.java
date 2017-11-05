@@ -1,15 +1,14 @@
 package fr.jdv.request;
 
+import fr.ekinci.clientmodels.AddressDto;
+import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
-import lombok.extern.java.Log;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by ulysse on 05/11/2017.
  */
-@Log
-public class UserRequest {
+public class AddressRequest {
 
     //@Value("${data-access-service.url}")
     private final String serviceUrl = "http://localhost";
@@ -21,22 +20,19 @@ public class UserRequest {
 
     /**
      * Send a POST request to the data access service
-     * @param userDto
+     * @param addressDto
+     * @param idUser
      * @return
      */
-    public UserDto post(UserDto userDto) {
+    public AddressDto post(AddressDto addressDto, String idUser) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(buildUrl("/users/"), userDto, UserDto.class);
+        return restTemplate.postForObject(buildUrl("/users/"+idUser+"/address"), addressDto, AddressDto.class);
     }
 
-    public UserDto get(String id) {
-        RestTemplate restTemplate = new RestTemplate();
-        UserDto userDto = restTemplate.getForObject(buildUrl("/users/"+id), UserDto.class);
-        log.info(userDto.toString());
-        return userDto;
-    }
+
 
     private String buildUrl(String args) {
         return serviceUrl + ":" + servicePort + serviceBaseUri +args;
     }
+
 }

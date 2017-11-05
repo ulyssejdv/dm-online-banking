@@ -19,6 +19,4 @@ public class AddressDto {
     private String street;
 
     private String code;
-
-    private UserDto user;
 }

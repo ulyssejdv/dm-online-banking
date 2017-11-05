@@ -17,6 +17,4 @@ public class PhoneDto {
     private String label;
 
     private String number;
-
-    private UserDto user;
 }

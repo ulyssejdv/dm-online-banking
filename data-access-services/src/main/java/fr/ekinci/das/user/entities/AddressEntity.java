@@ -1,6 +1,8 @@
 package fr.ekinci.das.user.entities;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -15,15 +17,9 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "country")
     private String country;
 
-    @Column(name = "street")
     private String street;
 
-    @Column(name = "code")
     private String code;
-
-    @OneToOne(cascade = {CascadeType.REMOVE})
-    private UserEntity user;
 }

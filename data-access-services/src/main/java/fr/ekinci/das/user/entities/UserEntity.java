@@ -1,8 +1,11 @@
 package fr.ekinci.das.user.entities;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Data
@@ -17,6 +20,12 @@ public class UserEntity {
 
 	@Column(name = "first_name")
 	private String firstName;
+
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private AddressEntity address;
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<PhoneEntity> phones;
 
     public Long getId() {
         return id;

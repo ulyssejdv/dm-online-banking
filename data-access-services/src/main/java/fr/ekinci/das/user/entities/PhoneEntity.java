@@ -1,6 +1,8 @@
 package fr.ekinci.das.user.entities;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -15,12 +17,7 @@ public class PhoneEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "label")
     private String label;
 
-    @Column(name = "number")
     private String number;
-
-    @ManyToOne
-    private UserEntity user;
 }

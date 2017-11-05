@@ -46,18 +46,7 @@ public class PhoneService implements IPhoneService {
 	@Override
 	public PhoneDto create(Long idUser, PhoneDto phoneDto) {
 
-		PhoneEntity phoneEntity = new PhoneEntity();
-		phoneEntity.setNumber(phoneDto.getNumber());
-		phoneEntity.setLabel(phoneDto.getLabel());
-
-		UserEntity userEntity = userRepository.findOne(idUser);
-        phoneEntity.setUser(userEntity);
-
-		phoneEntity = phoneRepository.save(phoneEntity);
-
-		phoneDto.setId(String.valueOf(phoneEntity.getId()));
-
-		return phoneDto;
+		return null;
 	}
 
 	@Override
