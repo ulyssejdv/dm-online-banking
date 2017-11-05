@@ -1,5 +1,6 @@
 package fr.ekinci.cms.user.controllers;
 
+import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
 import fr.jdv.request.UserRequest;
 import lombok.extern.java.Log;
@@ -37,6 +38,17 @@ public class ClientController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
+
+	    log.info(user.toString());
+
+	    // Save the user
+        user = userRequest.post(user);
+
+        // Save the phones
+        for (PhoneDto p : user.getPhones()) {
+            // userRequest.post()
+        }
+
 		return new ResponseEntity<>(UserDto.builder().build(), HttpStatus.OK);
 	}
 

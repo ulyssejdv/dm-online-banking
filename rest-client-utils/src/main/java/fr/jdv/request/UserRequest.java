@@ -18,19 +18,16 @@ public class UserRequest {
 
     private final String serviceBaseUri = "/data-access";
 
-    public void post(UserDto userDto) {
+    public UserDto post(UserDto userDto) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(buildUrl("/users/"), userDto, UserDto.class);
+        return restTemplate.postForObject(buildUrl("/users/"), userDto, UserDto.class);
     }
 
     public UserDto get(String id) {
         RestTemplate restTemplate = new RestTemplate();
         UserDto userDto = null;
-
         userDto = restTemplate.getForObject(buildUrl("/users/"+id), UserDto.class);
-
         return userDto;
-
     }
 
     private String buildUrl(String args) {
