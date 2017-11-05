@@ -1,6 +1,8 @@
 package fr.ekinci.das.user.services;
 
+import fr.ekinci.clientmodels.AccountDto;
 import fr.ekinci.clientmodels.PhoneDto;
+import fr.ekinci.das.user.entities.AccountEntity;
 import fr.ekinci.das.user.entities.AddressEntity;
 import fr.ekinci.das.user.entities.PhoneEntity;
 import fr.ekinci.das.user.entities.UserEntity;
@@ -33,9 +35,24 @@ public class UserService implements IUserService {
 			.stream()
 			.map(
 				u -> UserDto.builder()
-				.id(String.valueOf(u.getId()))
-				.firstName(u.getFirstName())
-				.lastName(u.getLastName())
+                        .id(String.valueOf(u.getId()))
+                        .firstName(u.getFirstName())
+                        .lastName(u.getLastName())
+                        .phones(u.getPhones().stream().map(
+                                p -> PhoneDto.builder()
+                                        .id(String.valueOf(p.getId()))
+                                        .number(p.getNumber())
+                                        .label(p.getLabel())
+                                        .build()
+                                ).collect(Collectors.toList())
+                        )
+                        .accounts(u.getAccounts().stream().map(
+                                a -> AccountDto.builder()
+                                        .id(String.valueOf(a.getId()))
+                                        .typeAccount(a.getTypeAccount())
+                                        .solde(a.getSolde())
+                                        .build()
+                        ).collect(Collectors.toList()))
 				.build()
 			)
 			.collect(Collectors.toList());
@@ -59,13 +76,25 @@ public class UserService implements IUserService {
                                     .build()
                     ).collect(Collectors.toList()))
                     .build();
+
+            if (userEntity.getAccounts() != null) {
+                userDto.setAccounts(userEntity.getAccounts().stream().map(
+                        a -> AccountDto
+                                .builder()
+                                .id(String.valueOf(a.getId()))
+                                .solde(a.getSolde())
+                                .typeAccount(a.getTypeAccount())
+                                .build()
+                ).collect(Collectors.toList()));
+            }
+
             return Optional.of(userDto);
         }
 
 		return Optional.empty();
 	}
 
-	@Override
+    @Override
 	public UserDto create(UserDto userDto) {
 
 		UserEntity userEntity = new UserEntity();

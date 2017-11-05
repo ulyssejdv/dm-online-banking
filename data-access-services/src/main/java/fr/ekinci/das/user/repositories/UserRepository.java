@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
 	List<UserEntity> findAll();
+	List<UserEntity> findByFirstNameAndLastName(String firstName, String lastName);
 }

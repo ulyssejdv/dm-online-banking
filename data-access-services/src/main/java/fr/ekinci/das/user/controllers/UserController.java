@@ -26,9 +26,10 @@ import java.util.Optional;
 public class UserController {
 
 	private final UserService userService;
-	private final PhoneService phoneService;
-	private final AddressService addressService;
 
+	private final PhoneService phoneService;
+
+	private final AddressService addressService;
 
 	@Autowired
 	public UserController(UserService userService, PhoneService phoneService, AddressService addressService) {
@@ -36,8 +37,6 @@ public class UserController {
 		this.phoneService = phoneService;
 		this.addressService = addressService;
 	}
-
-
 
 	/**
 	 * If page and size request parameters are filled, return a page. Otherwise, return a list of all elements.
@@ -64,32 +63,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-
-
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
-		log.info("Hello");
         final Optional<UserDto> dtoOpt = userService.getUserById(id);
         return (dtoOpt.isPresent()) ?
                 new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 
 	@PostMapping
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
 		return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
 	}
 
-
-
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDto userDto) {
 		userService.update(id, userDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
-
 
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {

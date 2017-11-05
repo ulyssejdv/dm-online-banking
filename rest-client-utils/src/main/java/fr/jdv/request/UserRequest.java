@@ -31,8 +31,19 @@ public class UserRequest {
 
     public UserDto get(String id) {
         RestTemplate restTemplate = new RestTemplate();
-        UserDto userDto = restTemplate.getForObject(buildUrl("/users/"+id), UserDto.class);
-        log.info(userDto.toString());
+        UserDto userDto = restTemplate.getForObject(
+                buildUrl("/users/"+id),
+                UserDto.class
+        );
+        return userDto;
+    }
+
+    public UserDto get(String firstName, String lastName) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserDto userDto = restTemplate.getForObject(
+                buildUrl("/users/"+firstName+"/"+lastName),
+                UserDto.class
+        );
         return userDto;
     }
 

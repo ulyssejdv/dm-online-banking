@@ -41,6 +41,15 @@ public class ClientController {
 		return (dtoOpt.isPresent()) ? new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+
+    @RequestMapping(path = "/{firstName}/{lastName}", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> get(@PathVariable String firstName, @PathVariable String lastName) {
+        UserDto userDto = userRequest.get(firstName, lastName);
+        log.info(userDto.toString());
+        final Optional<UserDto> dtoOpt = Optional.of(userDto);
+        return (dtoOpt.isPresent()) ? new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
 
