@@ -1,5 +1,6 @@
 package fr.jdv.request;
 
+import fr.ekinci.clientmodels.AccountDto;
 import fr.ekinci.clientmodels.UserDto;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,18 @@ public class UserRequest {
         return userDto;
     }
 
+    public AccountDto postAccount(String id, AccountDto accountDto) {
+        RestTemplate restTemplate = new RestTemplate();
+        accountDto = restTemplate.postForObject(
+                buildUrl("/users/"+id+"/accounts"),
+                accountDto,
+                AccountDto.class
+        );
+        return accountDto;
+    }
+
     private String buildUrl(String args) {
         return serviceUrl + ":" + servicePort + serviceBaseUri +args;
     }
+
 }

@@ -1,5 +1,6 @@
 package fr.ekinci.cms.user.controllers;
 
+import fr.ekinci.clientmodels.AccountDto;
 import fr.ekinci.clientmodels.AddressDto;
 import fr.ekinci.clientmodels.PhoneDto;
 import fr.ekinci.clientmodels.UserDto;
@@ -41,36 +42,26 @@ public class ClientController {
 		return (dtoOpt.isPresent()) ? new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-
-    @RequestMapping(path = "/{firstName}/{lastName}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> get(@PathVariable String firstName, @PathVariable String lastName) {
-        UserDto userDto = userRequest.get(firstName, lastName);
-        log.info(userDto.toString());
-        final Optional<UserDto> dtoOpt = Optional.of(userDto);
-        return (dtoOpt.isPresent()) ? new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
-
-	    log.info(user.toString());
-
-	    // Save the user
         user = userRequest.post(user);
-
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@RequestMapping(path = "/{id}/addresses", method = RequestMethod.PUT)
+	@RequestMapping(path = "/{id}/addresses", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@PathVariable String id, @RequestBody AddressDto addressDto) {
 		UserDto userDto = userRequest.get(id);
-		log.info(userDto.toString());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+    @RequestMapping(path = "/{id}/accounts", method = RequestMethod.POST)
+    public ResponseEntity<?> addAccount(@PathVariable String id, @RequestBody AccountDto accountDto) {
+        accountDto = userRequest.postAccount(id, accountDto);
+        return new ResponseEntity<>(accountDto, HttpStatus.OK);
+    }
+
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable String id) {
-		// TODO
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

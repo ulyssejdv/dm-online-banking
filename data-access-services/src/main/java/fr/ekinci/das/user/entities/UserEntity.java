@@ -27,6 +27,6 @@ public class UserEntity {
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<PhoneEntity> phones;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
     private Set<AccountEntity> accounts;
 }

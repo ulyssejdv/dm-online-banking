@@ -1,5 +1,7 @@
 package fr.ekinci.das.user.controllers;
 
+import fr.ekinci.clientmodels.AccountDto;
+import fr.ekinci.das.user.services.AccountService;
 import fr.ekinci.das.user.services.AddressService;
 import fr.ekinci.das.user.services.PhoneService;
 import fr.ekinci.das.user.services.UserService;
@@ -31,12 +33,20 @@ public class UserController {
 
 	private final AddressService addressService;
 
-	@Autowired
-	public UserController(UserService userService, PhoneService phoneService, AddressService addressService) {
+    private final AccountService accountService;
+
+    @Autowired
+	public UserController(
+	        UserService userService,
+            PhoneService phoneService,
+            AddressService addressService,
+            AccountService accountService)
+    {
 		this.userService = userService;
 		this.phoneService = phoneService;
 		this.addressService = addressService;
-	}
+        this.accountService = accountService;
+    }
 
 	/**
 	 * If page and size request parameters are filled, return a page. Otherwise, return a list of all elements.
@@ -96,4 +106,9 @@ public class UserController {
 	public ResponseEntity<AddressDto> addAddressToUser(@PathVariable Long id, @RequestBody AddressDto addressDto) {
 		return new ResponseEntity<>(addressService.create(id, addressDto), HttpStatus.OK);
 	}
+
+    @PostMapping(path = "/{id}/accounts")
+    public ResponseEntity<AccountDto> addAddressToUser(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+        return new ResponseEntity<>(accountService.create(id, accountDto), HttpStatus.OK);
+    }
 }

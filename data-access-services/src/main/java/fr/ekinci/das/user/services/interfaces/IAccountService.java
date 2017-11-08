@@ -1,5 +1,8 @@
 package fr.ekinci.das.user.services.interfaces;
 
-public interface IAccountService {
+import fr.ekinci.clientmodels.AccountDto;
+import fr.ekinci.clientmodels.AddressDto;
 
+public interface IAccountService {
+    AccountDto create(Long idUser, AccountDto accountDto);
 }
